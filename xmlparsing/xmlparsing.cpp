@@ -2,11 +2,50 @@
 //
 
 #include "stdafx.h"
+#include <stdio.h>
+#include <libxml/parser.h>
+#include <libxml/tree.h>
 
+/**
+ * example1Func:
+ * @filename: a filename or an URL
+ *
+ * Parse the resource and free the resulting tree
+ */
+static void
+example1Func(const char *filename) {
+    xmlDocPtr doc; /* the resulting document tree */
 
-int _tmain(int argc, _TCHAR* argv[])
+    doc = xmlReadFile(filename, NULL, 0);
+    if (doc == NULL) {
+        fprintf(stderr, "Failed to parse %s\n", filename);
+	return;
+    }
+    xmlFreeDoc(doc);
+}
+
+int main(int argc, char **argv)
 {
+    if (argc != 2)
+        return(1);
 
-	return 0;
+    /*
+     * this initialize the library and check potential ABI mismatches
+     * between the version it was compiled for and the actual shared
+     * library used.
+     */
+    LIBXML_TEST_VERSION
+
+    example1Func(argv[1]);
+
+    /*
+     * Cleanup function for the XML library.
+     */
+    xmlCleanupParser();
+    /*
+     * this is to debug memory for regression tests
+     */
+    xmlMemoryDump();
+    return(0);
 }
 
