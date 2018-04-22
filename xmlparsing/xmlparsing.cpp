@@ -26,9 +26,6 @@ example1Func(const char *filename) {
 
 int main(int argc, char **argv)
 {
-    if (argc != 2)
-        return(1);
-
     /*
      * this initialize the library and check potential ABI mismatches
      * between the version it was compiled for and the actual shared
